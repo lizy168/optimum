@@ -20,11 +20,9 @@ REQUIRED_PKGS = [
     "huggingface_hub>=0.8.0",
 ]
 
-# TODO: unpin pytest once https://github.com/huggingface/transformers/pull/29154 is merged & released
-# pytest>=8.0.0 also fails with the transformers version pinned for exporters-tf
 TESTS_REQUIRE = [
+    "pytest",
     "accelerate",
-    "pytest<=8.0.0",
     "requests",
     "parameterized",
     "pytest-xdist",
@@ -37,6 +35,7 @@ TESTS_REQUIRE = [
     "scikit-learn",
     "sentencepiece",
     "rjieba",
+    "hf_xet",
 ]
 
 QUALITY_REQUIRE = ["black~=23.1", "ruff==0.1.5"]
@@ -44,61 +43,19 @@ QUALITY_REQUIRE = ["black~=23.1", "ruff==0.1.5"]
 BENCHMARK_REQUIRE = ["optuna", "tqdm", "scikit-learn", "seqeval", "torchvision", "evaluate>=0.2.0"]
 
 EXTRAS_REQUIRE = {
-    "onnxruntime": [
-        "onnx",
-        "onnxruntime>=1.11.0",
-        "datasets>=1.2.1",
-        "evaluate",
-        "protobuf>=3.20.1",
-        "transformers>=4.36,<4.50.0",
-    ],
-    "onnxruntime-gpu": [
-        "onnx",
-        "onnxruntime-gpu>=1.11.0",
-        "datasets>=1.2.1",
-        "evaluate",
-        "protobuf>=3.20.1",
-        "transformers>=4.36,<4.50.0",
-    ],
-    "onnxruntime-training": [
-        "torch-ort",
-        "onnxruntime-training>=1.11.0",
-        "datasets>=1.2.1",
-        "accelerate",
-        "evaluate",
-        "protobuf>=3.20.1",
-        "transformers>=4.36,<4.50.0",
-    ],
-    "exporters": [
-        "onnx",
-        "onnxruntime",
-        "timm",
-        "transformers>=4.36,<4.50.0",
-    ],
-    "exporters-gpu": [
-        "onnx",
-        "onnxruntime-gpu",
-        "timm",
-        "transformers>=4.36,<4.50.0",
-    ],
-    "exporters-tf": [
-        "tensorflow>=2.4,<=2.12.1",
-        "tf2onnx",
-        "onnx",
-        "onnxruntime",
-        "timm",
-        "h5py",
-        "numpy<1.24.0",
-        "datasets<=2.16",
-        "transformers>=4.36,<4.38",
-    ],
-    "diffusers": ["diffusers"],
-    "intel": "optimum-intel>=1.18.0",
-    "openvino": "optimum-intel[openvino]>=1.18.0",
-    "nncf": "optimum-intel[nncf]>=1.18.0",
-    "neural-compressor": "optimum-intel[neural-compressor]>=1.18.0",
-    "ipex": "optimum-intel[ipex]>=1.18.0",
-    "habana": ["optimum-habana", "transformers>=4.45.0,<4.46.0"],
+    "onnx": "optimum-onnx @ git+https://github.com/huggingface/optimum-onnx.git",
+    "onnxruntime": "optimum-onnx[onnxruntime] @ git+https://github.com/huggingface/optimum-onnx.git",
+    "onnxruntime-gpu": "optimum-onnx[onnxruntime-gpu] @ git+https://github.com/huggingface/optimum-onnx.git",
+    # TODO: remove exporters (onnxruntime), exporters-gpu (onnxruntime) in v2.0
+    "exporters": "optimum-onnx[onnxruntime] @ git+https://github.com/huggingface/optimum-onnx.git",
+    "exporters-gpu": "optimum-onnx[onnxruntime-gpu] @ git+https://github.com/huggingface/optimum-onnx.git",
+    ###########################################################################
+    "intel": "optimum-intel>=1.23.0",
+    "openvino": "optimum-intel[openvino]>=1.23.0",
+    "nncf": "optimum-intel[nncf]>=1.23.0",
+    "neural-compressor": "optimum-intel[neural-compressor]>=1.23.0",
+    "ipex": "optimum-intel[ipex]>=1.23.0",
+    "habana": "optimum-habana>=1.17.0",
     "neuronx": ["optimum-neuron[neuronx]>=0.0.28"],
     "graphcore": "optimum-graphcore",
     "furiosa": "optimum-furiosa",
